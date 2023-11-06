@@ -1,16 +1,30 @@
- Basic Arduino Sketch
-*/
+#include <Servo.h>
 
-// the setup function runs once when you press reset or power the board
+Servo myservo;  // create servo object to control a servo
+
+const int switchPin = 7; // the number of the pushbutton pin
+const int servoPin = 9;  // the number of the servo pin
+
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  myservo.attach(servoPin); // attaches the servo on pin 9 to the servo object
+  pinMode(switchPin, INPUT_PULLUP); // initialize the pushbutton pin as an input with an internal pull-up resistor
+  
+  Serial.begin(9600); // initialize serial communication at 9600 bits per second
 }
 
-// the loop function runs over and over again forever
 void loop() {
-  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);                       // wait for a second
-  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);                       // wait for a second
+  // read the state of the switch value:
+  int switchState = digitalRead(switchPin);
+
+  // check if the switch is pressed (assuming the switch is wired to ground and reads LOW when pressed)
+  if (switchState == LOW) {
+    myservo.write(90); // sets the servo position to 90° when the switch is pressed
+    Serial.println("Circuit working, rotating"); // print message to the serial monitor
+  } else {
+    myservo.write(0);  // sets the servo position back to 0° when the switch is not pressed
+    Serial.println("Circuit not working"); // print message to the serial monitor
+  }
+
+  // simple debounce delay
+  delay(50);
 }
