@@ -1,42 +1,52 @@
+// Spongebob
+// By Delilah Reiss and Brendan Roy
+
 #include <Servo.h>
 
-// Constants for the pins used
-const int switchPinServo = 7; // Switch to control the servo
-const int switchPinLED = 6;   // Switch to control the LED
-const int servoPin = 9;       // Pin connected to the servo
-const int ledPin = 10;        // Pin connected to the LED
+Servo servo1;  // create servo object for the first servo
+Servo servo2;  // create servo object for the second servo
+Servo servo3;  // create servo object for the third servo
 
-// Create a Servo object
-Servo myServo;
+const int switchPin1 = 2;  // switch 1 connected to digital pin 2
+const int switchPin2 = 4;  // switch 2 connected to digital pin 4
+const int switchPin3 = 6;  // switch 3 connected to digital pin 6
+const int ledPin = 8;      // LED connected to digital pin 8
+const int ledSwitchPin = 9; // Switch for LED connected to digital pin 9
 
 void setup() {
-  // Initialize the switch pins as input with internal pull-up resistors
-  pinMode(switchPinServo, INPUT_PULLUP);
-  pinMode(switchPinLED, INPUT_PULLUP);
-  
-  // Initialize the LED pin as an output
-  pinMode(ledPin, OUTPUT);
-  
-  // Initialize the servo
-  myServo.attach(servoPin);
+  servo1.attach(3);  // attaches the first servo on pin 3 to the servo object
+  servo2.attach(5);  // attaches the second servo on pin 5 to the servo object
+  servo3.attach(7);  // attaches the third servo on pin 7 to the servo object
+
+  pinMode(switchPin1, INPUT); // initialize the switch pin 2 as an input
+  pinMode(switchPin2, INPUT); // initialize the switch pin 4 as an input
+  pinMode(switchPin3, INPUT); // initialize the switch pin 6 as an input
+  pinMode(ledPin, OUTPUT);    // initialize the LED pin as an output
+  pinMode(ledSwitchPin, INPUT); // initialize the LED switch pin as an input
 }
 
 void loop() {
-  // Read the state of the switches
-  int switchStateServo = digitalRead(switchPinServo);
-  int switchStateLED = digitalRead(switchPinLED);
-
-  // Control the servo
-  if (switchStateServo == LOW) { // When switch is pressed (assuming normally open)
-    myServo.write(90); // Replace with your desired angle
+  if (digitalRead(switchPin1) == HIGH) { 
+    servo1.write(180); 
   } else {
-    myServo.write(0); // Replace with angle for off state
+    servo1.write(0);   
   }
 
-  // Control the LED
-  if (switchStateLED == LOW) { // When switch is pressed
-    digitalWrite(ledPin, HIGH); // Turn on LED
+  if (digitalRead(switchPin2) == HIGH) {
+    servo2.write(90);  
   } else {
-    digitalWrite(ledPin, LOW); // Turn off LED
+    servo2.write(0);   
+  }
+
+  if (digitalRead(switchPin3) == HIGH) {
+    servo3.write(90);  
+  } else {
+    servo3.write(0);   
+  }
+
+  if (digitalRead(ledSwitchPin) == HIGH) { // Check the state of the LED switch
+    digitalWrite(ledPin, HIGH); // Turn on the LED
+  } else {
+    digitalWrite(ledPin, LOW);  // Turn off the LED
   }
 }
